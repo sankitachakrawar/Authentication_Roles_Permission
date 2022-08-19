@@ -1,11 +1,12 @@
 package com.example.serviceImpl;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.entities.UserEntity;
 import com.example.repository.UserRepository;
 import com.example.service.AuthService;
+
 
 @Service
 public class AuthServiceImpl implements AuthService{
@@ -26,4 +27,6 @@ public class AuthServiceImpl implements AuthService{
 			throw new Exception("You entered incorrect password.");
 		}
 	}
+
+	
 }

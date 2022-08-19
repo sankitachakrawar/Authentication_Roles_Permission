@@ -59,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		  @Override 
 		  protected void configure(HttpSecurity http) throws Exception {
 			  http.cors().configurationSource(corsConfigurationSource()).and().csrf().disable()
-				.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll().antMatchers("/auth/register","/auth/login").permitAll().
+				.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll().antMatchers("/auth/register","/auth/login","/api/forgot-pass-confirm","/auth/forgot-pass").permitAll().
 				anyRequest().authenticated().and().httpBasic().and().
 				exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

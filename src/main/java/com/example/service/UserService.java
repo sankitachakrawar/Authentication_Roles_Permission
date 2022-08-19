@@ -1,5 +1,11 @@
 package com.example.service;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.domain.Page;
+
+import com.example.dto.ForgotPasswordDto;
 import com.example.dto.IUserDto;
 import com.example.dto.UserDto;
 import com.example.entities.UserEntity;
@@ -19,4 +25,7 @@ public interface UserService {
 	public UserEntity findByEmail(String email);
 
 	Boolean comparePassword(String password, String hashPassword);
+	
+	void forgotPasswordConfirm(@NotNull(message = "token is Required*tokenRequired") String token,
+			@Valid ForgotPasswordDto userBody, HttpServletRequest request);
 }

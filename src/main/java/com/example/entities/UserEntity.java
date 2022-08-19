@@ -17,6 +17,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="users")
 @Where(clause = "is_active = true")
@@ -56,6 +58,7 @@ public class UserEntity {
 
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.user", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<UserRoleEntity> userRole;
 	
 	

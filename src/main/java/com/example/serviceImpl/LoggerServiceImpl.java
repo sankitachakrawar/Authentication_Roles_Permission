@@ -15,8 +15,6 @@ import com.example.entities.UserEntity;
 import com.example.repository.LoggerRepository;
 import com.example.service.LoggerServiceInterface;
 
-
-
 @Service("LoggerServiceImpl")
 public class LoggerServiceImpl implements LoggerServiceInterface {
 

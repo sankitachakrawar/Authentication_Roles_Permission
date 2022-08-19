@@ -1,10 +1,9 @@
 package com.example.controller;
 
 import java.util.List;
-import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -18,14 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.dto.ErrorResponseDto;
+import com.example.dto.ForgotPasswordDto;
 import com.example.dto.IUserDto;
 import com.example.dto.ListResponseDto;
 import com.example.dto.SuccessResponseDto;
 import com.example.dto.UserDto;
 import com.example.entities.UserEntity;
+import com.example.exceptionHandling.ResourceNotFoundException;
 import com.example.service.UserService;
-
-
 
 @RestController
 @RequestMapping("/api")
@@ -70,4 +69,20 @@ public class UserController {
 		return ResponseEntity.ok(this.userService.getUserById(id));
 		
 	}
+	
+	 @PutMapping("/forgot-pass-confirm")
+	  public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordDto forgotPasswordDto,HttpServletRequest request) throws ResourceNotFoundException {
+	  
+	  try {
+	 
+		  userService.forgotPasswordConfirm(forgotPasswordDto.getToken(), forgotPasswordDto, request);
+	System.out.println("password>>"+forgotPasswordDto);
+	  return new ResponseEntity<>("password Updated",HttpStatus.OK);
+	  
+	  } catch (ResourceNotFoundException e) {
+	  
+	  return new ResponseEntity<>( "Access Denied", HttpStatus.BAD_GATEWAY);
+	  
+	 }
+	  }
 }

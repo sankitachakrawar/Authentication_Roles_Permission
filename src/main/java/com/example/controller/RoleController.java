@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +70,13 @@ public class RoleController {
 		roleService.deleteRoles(id);
 		return new  ResponseEntity<>("Role deleted sucesssfully!!",HttpStatus.OK);
 	}
-	
+
+
+	@GetMapping("/permissions/user/{id}")
+	public ResponseEntity<?> getPermissionByUserId(@PathVariable ("id") Long id){
+		
+		ArrayList<String> roleEntity=roleService.getPermissionByUserId(id);
+		return new ResponseEntity<>(new SuccessResponseDto("Success", "success", roleEntity), HttpStatus.OK);
+		
+	}
 }

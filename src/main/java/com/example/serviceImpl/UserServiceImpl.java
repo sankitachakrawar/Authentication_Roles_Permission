@@ -1,17 +1,30 @@
 package com.example.serviceImpl;
 
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.dto.ForgotPasswordDto;
 import com.example.dto.IUserDto;
 import com.example.dto.UserDto;
+import com.example.entities.Forgot_password_request;
 import com.example.entities.UserEntity;
 import com.example.exceptionHandling.ResourceNotFoundException;
+import com.example.repository.ForgotPasswordRequestRepository;
 import com.example.repository.UserRepository;
+import com.example.service.ForgotPasswordServiceIntf;
 import com.example.service.UserService;
+import com.example.utils.JwtTokenUtil;
 import com.example.utils.PaginationUsingFromTo;
 
 @Service
@@ -24,6 +37,13 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private PasswordEncoder bcryptEncoder;
+	
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+
+	@Autowired
+	private ForgotPasswordRequestRepository forgotPasswordRequestRepository;
+	
 	
 	public UserServiceImpl(UserRepository userRepository) {
 		this.userRepository = userRepository;
@@ -99,4 +119,42 @@ public class UserServiceImpl implements UserService{
 		UserEntity userEntity = userRepository.findByEmail(email);
 		return userEntity;
 	}
+	
+	@Override
+	public void forgotPasswordConfirm( String token,@Valid ForgotPasswordDto userBody, HttpServletRequest request) {
+		
+		
+		DecodedJWT jwt = JWT.decode(token); 
+		Date CurrentDate = new Date(System.currentTimeMillis());
+		
+		if (CurrentDate.before(jwt.getExpiresAt())) {
+
+			if (userBody.getPassword().equals(userBody.getConfirmpassword())) {
+				
+				String email = null;
+				String jwtToken = null; 
+				jwtToken = userBody.getToken();
+				email = jwtTokenUtil.getEmailFromToken(jwtToken); 
+				
+				UserEntity userEntity = userRepository.getUserByEmail(email);
+
+				userEntity.setPassword(bcryptEncoder.encode(userBody.getPassword()));
+				userRepository.save(userEntity);
+
+			} else {
+
+				throw new ResourceNotFoundException("password and confirm password must be a same");
+			}
+
+		} else {
+
+			Forgot_password_request forgot_password_request = forgotPasswordRequestRepository
+					.getByTokenOrderByIdDesc(token).orElseThrow(() -> new ResourceNotFoundException("Invalid Request"));
+			forgot_password_request.setIsActive(false);
+			throw new ResourceNotFoundException("Reset the password time out");
+
+		}
+		
+	}
+	
 }

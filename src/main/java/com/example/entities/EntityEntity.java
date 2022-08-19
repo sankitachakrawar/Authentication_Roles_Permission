@@ -1,41 +1,37 @@
 package com.example.entities;
 
 import java.util.Date;
-import java.util.List;
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
-@Table(name="roles")
-@Where(clause = "is_active = true")
-@SQLDelete(sql="UPDATE roles SET is_active=false WHERE id=?")
-public class RoleEntity {
+@Table(name="entities")
+@Where(clause="is_active=true")
+@SQLDelete(sql="UPDATE entities set is_active=false where id=?")
+public class EntityEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name="role_name")
-	private String roleName;
+	@Column(name="entityName")
+	private String entityName;
 	
 	@Column(name="description")
 	private String description;
 	
-	@Column(name="isActive")
-	private Boolean isActive=true;
+	@Column(name="is_active")
+	private Boolean is_Active=true;
 	
 	@Column(name="createdAt")
 	@CreationTimestamp
@@ -45,11 +41,6 @@ public class RoleEntity {
 	@UpdateTimestamp
 	private Date updatedAt;
 
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.role", cascade = CascadeType.ALL)
-	@JsonIgnore
-	private List<UserRoleEntity> userRole;
-	
 	public Long getId() {
 		return id;
 	}
@@ -58,12 +49,12 @@ public class RoleEntity {
 		this.id = id;
 	}
 
-	public String getRoleName() {
-		return roleName;
+	public String getEntityName() {
+		return entityName;
 	}
 
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
+	public void setEntityName(String entityName) {
+		this.entityName = entityName;
 	}
 
 	public String getDescription() {
@@ -74,12 +65,12 @@ public class RoleEntity {
 		this.description = description;
 	}
 
-	public Boolean getIsActive() {
-		return isActive;
+	public Boolean getIs_Active() {
+		return is_Active;
 	}
 
-	public void setIsActive(Boolean isActive) {
-		this.isActive = isActive;
+	public void setIs_Active(Boolean is_Active) {
+		this.is_Active = is_Active;
 	}
 
 	public Date getCreatedAt() {
@@ -98,24 +89,18 @@ public class RoleEntity {
 		this.updatedAt = updatedAt;
 	}
 
-	public RoleEntity() {
+	public EntityEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	public List<UserRoleEntity> getUserRole() {
-		return userRole;
-	}
-	public void setUserRole(List<UserRoleEntity> userRole) {
-		this.userRole = userRole;
-	}
 
-	public RoleEntity(Long id, String roleName, String description, Boolean isActive, Date createdAt, Date updatedAt) {
+	public EntityEntity(Long id, String entityName, String description, Boolean is_Active, Date createdAt,
+			Date updatedAt) {
 		super();
 		this.id = id;
-		this.roleName = roleName;
+		this.entityName = entityName;
 		this.description = description;
-		this.isActive = isActive;
+		this.is_Active = is_Active;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 	}
