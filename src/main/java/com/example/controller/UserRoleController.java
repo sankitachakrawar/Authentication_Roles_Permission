@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +27,7 @@ public class UserRoleController {
 	@Autowired
 	private UserRoleService userRoleService;
 	
-	
+	@PreAuthorize("hasRole('assignRoleToUser')")
 	@PostMapping("/assignRole")
 	public ResponseEntity<?> assignRoleToUser(@RequestBody AssignRole assignRole,HttpServletRequest request){
 		
@@ -40,7 +41,7 @@ public class UserRoleController {
 	}
 	
 	
-	
+	@PreAuthorize("hasRole('getAllUserRoles')")
 	@GetMapping("/userRole")
 	public ResponseEntity<?> getAllUserRoles(@RequestParam(defaultValue = "") String search,
 			@RequestParam(defaultValue = "1") String pageNo, @RequestParam(defaultValue = "25") String size){

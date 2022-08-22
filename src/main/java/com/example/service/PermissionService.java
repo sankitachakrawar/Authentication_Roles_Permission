@@ -1,5 +1,7 @@
 package com.example.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 
 import com.example.dto.IPermissionDto;
@@ -12,9 +14,11 @@ public interface PermissionService {
 	
 	PermissionEntity updatePermission(PermissionRequestDto permissionRequestDto , Long id);
 
-	Page<IPermissionDto> getAllPermissions(String search, String from, String to);
+	//Page<IPermissionDto> getAllPermissions(String search, String from, String to);
 	
 	void deletePermission(Long id);
+
+	List<PermissionEntity> getAllPermissions();
 
 	
 }

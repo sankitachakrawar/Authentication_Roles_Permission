@@ -1,10 +1,12 @@
 package com.example.controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +22,7 @@ import com.example.dto.ListResponseDto;
 import com.example.dto.PermissionDto;
 import com.example.dto.PermissionRequestDto;
 import com.example.dto.SuccessResponseDto;
+import com.example.entities.PermissionEntity;
 import com.example.exceptionHandling.ResourceNotFoundException;
 import com.example.service.PermissionService;
 
@@ -30,14 +33,16 @@ public class PermissionController {
 	@Autowired
 	private PermissionService permissionService;
 	
+	@PreAuthorize("hasRole('addPermissions')")
 	@PostMapping("/permission")
 	public ResponseEntity<?> addPermissions(@RequestBody PermissionRequestDto permissionRequestDto){
 		permissionService.addPermissions(permissionRequestDto);
 		return new ResponseEntity<>(new SuccessResponseDto("Success", "success", null),HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('updatePermissions')")
 	@PutMapping("/permission/{id}")
-	public ResponseEntity<?> updatepermissions(@RequestBody PermissionRequestDto permissionRequestDto,@PathVariable Long id){
+	public ResponseEntity<?> updatePermissions(@RequestBody PermissionRequestDto permissionRequestDto,@PathVariable Long id){
 		try {
 
 			permissionService.updatePermission(permissionRequestDto, id);
@@ -50,23 +55,21 @@ public class PermissionController {
 		}
 	}
 	
+	@PreAuthorize("hasRole('deletePermission')")
 	@DeleteMapping("/permission/{id}")
 	public ResponseEntity<?> deletePermission(@PathVariable Long id){
 		this.permissionService.deletePermission(id);
 		return new ResponseEntity<>("Permission Deleted",HttpStatus.OK);
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@GetMapping("/permission")
-	public ResponseEntity<List<PermissionDto>> getAllUsers(@RequestParam(defaultValue = "") String search,
-			@RequestParam(defaultValue = "1") String pageNo, @RequestParam(defaultValue = "25") String size){
-		
-		Page<IPermissionDto> permission = permissionService.getAllPermissions(search, pageNo, size);
-		if (permission.getTotalElements() != 0) {
-			return new ResponseEntity(new SuccessResponseDto("Success", "success",
-					new ListResponseDto(permission.getContent(), permission.getTotalElements())), HttpStatus.OK);
-		}
-		return new ResponseEntity(new ErrorResponseDto("Data Not Found", "dataNotFound"), HttpStatus.NOT_FOUND);
 	
+	@GetMapping("/permission")
+	public ResponseEntity<?> getAllPermissions(){
+		
+		List<PermissionEntity> entity=this.permissionService.getAllPermissions();
+		
+		return new ResponseEntity<>(new SuccessResponseDto("Success","success",entity),HttpStatus.OK);
+		
 	}
+	
 }

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ public class EntityController {
 	@Autowired
 	private EntityService entityService;
 	
+	@PreAuthorize("hasRole('addEntity')")
 	@PostMapping("/entity")
 	public ResponseEntity<?> addEntity(@RequestBody EntityDto entityDto){
 		
@@ -38,6 +40,7 @@ public class EntityController {
 				HttpStatus.CREATED);
 	}
 	
+	@PreAuthorize("hasRole('updateEntity')")
 	@PutMapping("/entity/{id}")
 	public ResponseEntity<?> updateEntity(@RequestBody EntityEntity entityEntity, @PathVariable Long id){
 		
@@ -46,6 +49,7 @@ public class EntityController {
 		
 	}
 	
+	@PreAuthorize("hasRole('deleteEntity')")
 	@DeleteMapping("/entity/{id}")
 	public ResponseEntity<?> deleteEntity(@PathVariable Long id){
 		this.entityService.deleteEntity(id);
@@ -53,6 +57,7 @@ public class EntityController {
 	}
 	
 	@SuppressWarnings("unchecked")
+	@PreAuthorize("hasRole('getAllEntity')")
 	@GetMapping("/entity")
 	public ResponseEntity<List<EntityDto>> getAllEntity(@RequestParam(defaultValue = "") String search,
 			@RequestParam(defaultValue = "1") String pageNo, @RequestParam(defaultValue = "25") String size){

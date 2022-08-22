@@ -1,5 +1,6 @@
 package com.example.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -21,7 +22,12 @@ import org.hibernate.annotations.Where;
 @Table(name="permissions")
 @Where(clause="is_active=true")
 @SQLDelete(sql="UPDATE permissions set is_active=false where id=?")
-public class PermissionEntity {
+public class PermissionEntity implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -157,5 +163,8 @@ public class PermissionEntity {
 		this.entityId = entityId;
 	}
 	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	
 }

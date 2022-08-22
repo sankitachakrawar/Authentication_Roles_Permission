@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,7 @@ public class UserController {
 	
 
 	@SuppressWarnings("unchecked")
+	@PreAuthorize("hasRole('getAllUsers')")
 	@GetMapping("/user")
 	public ResponseEntity<List<UserDto>> getAllUsers(@RequestParam(defaultValue = "") String search,
 			@RequestParam(defaultValue = "1") String pageNo, @RequestParam(defaultValue = "25") String size){
@@ -48,6 +50,7 @@ public class UserController {
 	
 	}
 	
+	@PreAuthorize("hasRole('updateUser')")
 	@PutMapping("/user/{id}")
 	public ResponseEntity<?> updateUser(@Valid @RequestBody UserEntity user,@PathVariable Long id){
 		
@@ -57,12 +60,14 @@ public class UserController {
 		
 	}
 	
+	@PreAuthorize("hasRole('deleteUsers')")
 	@DeleteMapping("/user/{id}")
 	public ResponseEntity<?> deleteUsers(@PathVariable Long id){
 		userService.deleteUsers(id);
 		return new  ResponseEntity<>("User deleted sucesssfully!!",HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('getSingleUser')")
 	@GetMapping("/user/{id}")
 	public ResponseEntity<UserEntity> getSingleUser(@PathVariable Long id){
 		

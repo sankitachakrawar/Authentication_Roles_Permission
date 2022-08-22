@@ -1,5 +1,7 @@
 package com.example.serviceImpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -53,24 +55,18 @@ public class PermissionServiceImpl implements PermissionService{
 	}
 
 	@Override
-	public Page<IPermissionDto> getAllPermissions(String search, String from, String to) {
-		Pageable paging = new PaginationUsingFromTo().getPagination(from, to);
-		if ((search == "") || (search == null) || (search.length() == 0)) {
-			
-			return permissionRepository.findByOrderById(paging, IPermissionDto.class);
-		} else {
-			
-			return permissionRepository.findByActionNameContainingIgnoreCaseOrderById(search, paging, IPermissionDto.class);
-			
-		}	
-	}
-
-	@Override
 	public void deletePermission(Long id) {
 	
 	this.permissionRepository.findById(id).
 				orElseThrow(() -> new ResourceNotFoundException("permission", "id", id));
 		this.permissionRepository.deleteById(id);
+	}
+
+	@Override
+	public List<PermissionEntity> getAllPermissions() {
+
+			return permissionRepository.findAll();
+		
 	}
 
 }

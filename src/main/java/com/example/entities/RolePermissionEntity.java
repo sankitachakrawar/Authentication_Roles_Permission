@@ -1,5 +1,6 @@
 package com.example.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
@@ -14,22 +15,22 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Table(name="role_permission")
-@Where(clause="is_active=false")
-@SQLDelete(sql="UPDATE role_permission set is_active=false where id=?")
-@AssociationOverrides({ @AssociationOverride(name= "pk.role" ,joinColumns = @JoinColumn(name="role_id")),@AssociationOverride(name="pk.permission",joinColumns = @JoinColumn(name="permission_id")) })
-public class RolePermissionEntity {
+@Table(name = "role_permission")
+@Where(clause = "is_active= true")
+@SQLDelete(sql = "UPDATE role_permission SET is_active=false WHERE pk=?")
+@AssociationOverrides({ @AssociationOverride(name = "pk.role", joinColumns = @JoinColumn(name = "role_id")), @AssociationOverride(name = "pk.permission", joinColumns = @JoinColumn(name = "permission_id")) })
+public class RolePermissionEntity implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private RolePermissionId pk = new RolePermissionId();
 	
-
 	private Boolean isActive=true;
-	
-	
-	
+		
 	private Date createdAt;
-	
-	
 	
 	private Date updatedAt;
 

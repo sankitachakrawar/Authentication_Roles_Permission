@@ -1,16 +1,12 @@
 package com.example.dto;
 
 public interface IPermissionDto {
+	
+	public Long getPkPermissionId();
 
-	public Long getId();
+	public String getPkPermissionActionName();
+
+	public String getPkPermissionDescription();
+
 	
-	public String getActionName();
-	
-	public String getDescription();
-	
-	public String getMethod();
-	
-	public String getBaseUrl();
-	
-	public String getPath();
 }

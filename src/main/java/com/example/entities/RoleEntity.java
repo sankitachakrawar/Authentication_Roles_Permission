@@ -16,6 +16,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -48,6 +49,7 @@ public class RoleEntity {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.role", cascade = CascadeType.ALL)
 	@JsonIgnore
+	@JsonBackReference
 	private List<UserRoleEntity> userRole;
 	
 	public Long getId() {

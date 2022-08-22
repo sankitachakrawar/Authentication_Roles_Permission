@@ -1,10 +1,13 @@
 package com.example.entities;
 
 import java.io.Serializable;
+
 import java.util.Objects;
 
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Embeddable
 public class RolePermissionId implements Serializable{
 
@@ -50,14 +53,22 @@ public class RolePermissionId implements Serializable{
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+
+		if (this == obj) {
+
 			return true;
-		if (obj == null)
+
+		}
+
+		if ((obj == null) || (getClass() != obj.getClass())) {
+
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
+
+		}
+
 		RolePermissionId other = (RolePermissionId) obj;
 		return Objects.equals(permission, other.permission) && Objects.equals(role, other.role);
+
 	}
 	
 	
