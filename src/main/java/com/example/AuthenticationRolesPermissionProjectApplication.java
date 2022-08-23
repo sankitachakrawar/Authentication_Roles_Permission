@@ -9,6 +9,7 @@ import org.springframework.cache.annotation.EnableCaching;
 public class AuthenticationRolesPermissionProjectApplication {
 
 	public static void main(String[] args) {
+		System.setProperty("spring.devtools.restart.enabled", "false");
 		SpringApplication.run(AuthenticationRolesPermissionProjectApplication.class, args);
 	}
 

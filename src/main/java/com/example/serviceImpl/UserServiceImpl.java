@@ -1,27 +1,31 @@
 package com.example.serviceImpl;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.dto.ForgotPasswordDto;
+import com.example.dto.IPermissionDto;
 import com.example.dto.IUserDto;
+import com.example.dto.RoleIdListDto;
 import com.example.dto.UserDto;
 import com.example.entities.Forgot_password_request;
 import com.example.entities.UserEntity;
 import com.example.exceptionHandling.ResourceNotFoundException;
 import com.example.repository.ForgotPasswordRequestRepository;
+import com.example.repository.RolePermissionRepository;
 import com.example.repository.UserRepository;
+import com.example.repository.UserRoleRepository;
 import com.example.service.ForgotPasswordServiceIntf;
 import com.example.service.UserService;
 import com.example.utils.JwtTokenUtil;
@@ -155,6 +159,28 @@ public class UserServiceImpl implements UserService{
 
 		}
 		
+	}
+	
+	@Autowired
+	private UserRoleRepository userRoleRepository;
+	
+	@Autowired
+	private RolePermissionRepository rolePermissionRepository;
+	
+	@Override
+	public List<IPermissionDto> getUserPermission(Long userId) throws IOException {
+
+		ArrayList<RoleIdListDto> roleIds = userRoleRepository.findByPkUserId(userId, RoleIdListDto.class);
+		ArrayList<Long> roles = new ArrayList<>();
+
+		for (int i = 0; i < roleIds.size(); i++) {
+
+			roles.add(roleIds.get(i).getPkRoleId());
+
+		}
+
+		return rolePermissionRepository.findByPkRoleIdIn(roles, IPermissionDto.class);
+
 	}
 	
 }

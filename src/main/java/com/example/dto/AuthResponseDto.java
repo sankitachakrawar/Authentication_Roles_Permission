@@ -3,6 +3,7 @@ package com.example.dto;
 import java.io.Serializable;
 import java.util.List;
 
+
 public class AuthResponseDto implements Serializable {
 
 	private static final long serialVersionUID = -8091879091924046844L;
@@ -12,6 +13,14 @@ public class AuthResponseDto implements Serializable {
 	private String email;
 
 	private String name;
+	
+	private List<IPermissionDto> permission;
+
+	public List<IPermissionDto> getPermission() {
+
+		return permission;
+
+	}
 
 	private Long id;
 
@@ -47,13 +56,17 @@ public class AuthResponseDto implements Serializable {
 		return token;
 	}
 
-	public AuthResponseDto(String token, String email, String name, Long id) {
+	public AuthResponseDto(String token, String email, String name, List<IPermissionDto> permission, Long id) {
 		super();
 		this.token = token;
 		this.email = email;
 		this.name = name;
+		this.permission = permission;
 		this.id = id;
 	}
+
+
+	
 
 	
 

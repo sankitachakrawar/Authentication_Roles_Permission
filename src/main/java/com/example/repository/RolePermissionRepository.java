@@ -25,4 +25,6 @@ public interface RolePermissionRepository extends JpaRepository<RolePermissionEn
 	//ArrayList<IPermissionDto> findByPkRoleId(Long id, Class<IPermissionDto> class1);
 
 	ArrayList<IPermissionDto> findByPkRoleId(Long roleId, Class<IPermissionDto> IPermissionDto);
+
+	List<IPermissionDto> findByPkRoleIdIn(ArrayList<Long> roles, Class<IPermissionDto> class1);
 }

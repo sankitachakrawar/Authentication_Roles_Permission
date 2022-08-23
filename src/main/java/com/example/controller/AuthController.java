@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -14,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.dto.AuthRequestDto;
 import com.example.dto.AuthResponseDto;
 import com.example.dto.ErrorResponseDto;
 import com.example.dto.ForgotPasswordDto;
 import com.example.dto.ForgotPasswordRequestDto;
+import com.example.dto.IPermissionDto;
 import com.example.dto.LoggerDto;
 import com.example.dto.SuccessResponseDto;
 import com.example.dto.UserDto;
@@ -100,13 +101,14 @@ public class AuthController {
 			@SuppressWarnings("static-access")
 			final String token = jwtTokenUtil.generateTokenOnLogin(userEntity.getEmail(), userEntity.getPassword());
 		
+			List<IPermissionDto> permissions = userService.getUserPermission(userEntity.getId());
 			LoggerDto logger = new LoggerDto();
 			logger.setToken(token);
 			Calendar calender = Calendar.getInstance();
-			calender.add(Calendar.MINUTE, 15);
+			calender.add(Calendar.HOUR_OF_DAY, 5);
 			logger.setExpireAt(calender.getTime());
 			loggerServiceInterface.createLogger(logger,userEntity);
-			return new ResponseEntity(new SuccessResponseDto("Success", "success", new AuthResponseDto(token,userEntity.getEmail(),userEntity.getName(),userEntity.getId())), HttpStatus.OK);
+			return new ResponseEntity(new SuccessResponseDto("Success", "success", new AuthResponseDto(token,userEntity.getEmail(),userEntity.getName(),permissions,userEntity.getId())), HttpStatus.OK);
 			
 		} catch (ResourceNotFoundException e) {
 

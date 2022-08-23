@@ -1,10 +1,14 @@
 package com.example.controller;
 
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,10 +31,11 @@ import com.example.entities.UserEntity;
 import com.example.exceptionHandling.ResourceNotFoundException;
 import com.example.service.UserService;
 
+
 @RestController
 @RequestMapping("/api")
 public class UserController {
-
+	
 	@Autowired
 	private UserService userService;
 	
@@ -52,6 +57,7 @@ public class UserController {
 	
 	@PreAuthorize("hasRole('updateUser')")
 	@PutMapping("/user/{id}")
+	//@CachePut(value="user",key="#user.id")
 	public ResponseEntity<?> updateUser(@Valid @RequestBody UserEntity user,@PathVariable Long id){
 		
 		this.userService.updateUser(user, id);
@@ -62,6 +68,7 @@ public class UserController {
 	
 	@PreAuthorize("hasRole('deleteUsers')")
 	@DeleteMapping("/user/{id}")
+	//@CacheEvict(value="user",key="#id")
 	public ResponseEntity<?> deleteUsers(@PathVariable Long id){
 		userService.deleteUsers(id);
 		return new  ResponseEntity<>("User deleted sucesssfully!!",HttpStatus.OK);
@@ -69,6 +76,7 @@ public class UserController {
 	
 	@PreAuthorize("hasRole('getSingleUser')")
 	@GetMapping("/user/{id}")
+	//@Cacheable(value = "user", key = "#id")
 	public ResponseEntity<UserEntity> getSingleUser(@PathVariable Long id){
 		
 		return ResponseEntity.ok(this.userService.getUserById(id));

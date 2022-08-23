@@ -42,7 +42,7 @@ public class RolePermissionController {
 		
 	}
 	
-	@PreAuthorize("hasRole('getAllPermissions')")
+	@PreAuthorize("hasRole('getAllRolesPermissions')")
 	@GetMapping("/rolePermission")
 	public ResponseEntity<?> getAllRolesPermissions(@RequestParam(defaultValue = "") String search,
 			@RequestParam(defaultValue = "1") String pageNo, @RequestParam(defaultValue = "25") String size){

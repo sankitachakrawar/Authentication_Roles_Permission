@@ -55,14 +55,14 @@ public class PermissionController {
 		}
 	}
 	
-	@PreAuthorize("hasRole('deletePermission')")
+	@PreAuthorize("hasRole('deletePermissions')")
 	@DeleteMapping("/permission/{id}")
 	public ResponseEntity<?> deletePermission(@PathVariable Long id){
 		this.permissionService.deletePermission(id);
 		return new ResponseEntity<>("Permission Deleted",HttpStatus.OK);
 	}
 	
-	
+	@PreAuthorize("hasRole('getAllPermissions')")
 	@GetMapping("/permission")
 	public ResponseEntity<?> getAllPermissions(){
 		

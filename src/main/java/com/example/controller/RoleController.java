@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.PostRemove;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,7 +81,7 @@ public class RoleController {
 	}
 
 
-	//@PreAuthorize("hasRole('getPermissionByUserId')")
+	@PreAuthorize("hasRole('getPermissionByUserId')")
 	@GetMapping("/permissions/user/{id}")
 	public ResponseEntity<?> getPermissionByUserId(@PathVariable ("id") Long user_Id){
 		
@@ -91,8 +92,9 @@ public class RoleController {
 	}
 	
 	
-	//@PreAuthorize("hasRole('getRoleAndPermissionById')")
+	@PreAuthorize("hasRole('getRoleAndPermissionById')")
 	@GetMapping("/permission/{id}")
+	//@Cacheable(value="users",key="roleId",unless = "#result.followers < 12000")
 	public ResponseEntity<?> getRoleAndPermissionById(@PathVariable(value = "id") Long roleId) {
 
 		try {
@@ -109,7 +111,7 @@ public class RoleController {
 		}
 
 	}
-	
+	@PreAuthorize("hasRole('getRoleAndUserById')")
 	@GetMapping("/role/user/{id}")
 	public ResponseEntity<?> getRoleAndUserById(@PathVariable(value = "id") Long id) {
 
