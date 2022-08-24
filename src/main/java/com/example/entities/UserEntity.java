@@ -1,5 +1,6 @@
 package com.example.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -23,9 +24,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name="users")
 @Where(clause = "is_active = true")
 @SQLDelete(sql="UPDATE users SET is_active=false WHERE id=?")
-public class UserEntity {
+public class UserEntity implements Serializable{
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -133,14 +139,27 @@ public class UserEntity {
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+	
 
+
+	public List<UserRoleEntity> getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(List<UserRoleEntity> userRole) {
+		this.userRole = userRole;
+	}
+
+	
 	public UserEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+	
+	
 	public UserEntity(Long id, String name, String email, String password, String username, String address,
-			Boolean isActive, Date createdAt, Date updatedAt) {
+			Boolean isActive, Date createdAt, Date updatedAt, List<UserRoleEntity> userRole) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -151,6 +170,12 @@ public class UserEntity {
 		this.isActive = isActive;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
+		this.userRole = userRole;
+	}
+
+	@Override
+	public String toString() {
+		return "UserEntity [id=" + id + ", name=" + name + ", email=" + email + "]";
 	}
 
 	

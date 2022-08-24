@@ -3,11 +3,7 @@ package com.example.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -76,7 +72,7 @@ public class UserController {
 	
 	@PreAuthorize("hasRole('getSingleUser')")
 	@GetMapping("/user/{id}")
-	//@Cacheable(value = "user", key = "#id")
+	//@Cacheable(value = "users", key = "#id")
 	public ResponseEntity<UserEntity> getSingleUser(@PathVariable Long id){
 		
 		return ResponseEntity.ok(this.userService.getUserById(id));
@@ -86,10 +82,9 @@ public class UserController {
 	 @PutMapping("/forgot-pass-confirm")
 	  public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordDto forgotPasswordDto,HttpServletRequest request) throws ResourceNotFoundException {
 	  
-	  try {
-	 
+	  try {	 
 		  userService.forgotPasswordConfirm(forgotPasswordDto.getToken(), forgotPasswordDto, request);
-	System.out.println("password>>"+forgotPasswordDto);
+		  System.out.println("password>>"+forgotPasswordDto);
 	  return new ResponseEntity<>("password Updated",HttpStatus.OK);
 	  
 	  } catch (ResourceNotFoundException e) {

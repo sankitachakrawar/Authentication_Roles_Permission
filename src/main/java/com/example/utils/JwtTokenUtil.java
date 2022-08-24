@@ -86,7 +86,7 @@ public class JwtTokenUtil implements Serializable{
 	}
 	private static String doGenerateTokenOnLogin(Map<String, Object> claims,  String subject, String password) {
 		System.out.println(claims + "   Subject: "+ subject + "   Password: " + password);
-		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis())).setExpiration(new Date(System.currentTimeMillis() + (JWT_TOKEN_VALIDITY_FORGOT_PASS * 1000))).signWith(SignatureAlgorithm.HS512, secret).compact();
+		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis())).setExpiration(new Date(System.currentTimeMillis() + (JWT_TOKEN_VALIDITY * 1000))).signWith(SignatureAlgorithm.HS512, secret).compact();
 	}
 
 	private static String doGenerateToken(Map<String, Object> claims, String subject) {

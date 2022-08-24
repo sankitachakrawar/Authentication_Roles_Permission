@@ -36,7 +36,7 @@ public class UserRoleId implements java.io.Serializable {
 	private RoleEntity role;
 
 	@ManyToOne
-	@JsonManagedReference
+	//@JsonManagedReference
 	public UserEntity getUser() {
 		return user;
 	}
@@ -45,7 +45,7 @@ public class UserRoleId implements java.io.Serializable {
 	}
 
 	@ManyToOne
-	@JsonManagedReference
+	//@JsonManagedReference
 	public RoleEntity getRole() {
 
 		return role;
