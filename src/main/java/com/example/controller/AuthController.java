@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.dto.AuthRequestDto;
 import com.example.dto.AuthResponseDto;
 import com.example.dto.ErrorResponseDto;
-import com.example.dto.ForgotPasswordDto;
 import com.example.dto.ForgotPasswordRequestDto;
 import com.example.dto.IPermissionDto;
 import com.example.dto.LoggerDto;
+import com.example.dto.OtpLoggerDto;
 import com.example.dto.SuccessResponseDto;
 import com.example.dto.UserDto;
 import com.example.entities.UserEntity;
@@ -30,6 +29,8 @@ import com.example.repository.UserRepository;
 import com.example.service.EmailService;
 import com.example.service.ForgotPasswordServiceIntf;
 import com.example.service.LoggerServiceInterface;
+import com.example.service.OtpGenerator;
+import com.example.service.OtpLoggerService;
 import com.example.service.UserService;
 import com.example.serviceImpl.UserServiceImpl;
 import com.example.utils.JwtTokenUtil;
@@ -58,6 +59,12 @@ public class AuthController {
 	
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private OtpLoggerService loggerService;
+	
+	@Autowired
+	private OtpGenerator otpService;
 	
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUsers(@Valid @RequestBody UserDto userDto){
@@ -118,8 +125,6 @@ public class AuthController {
  }
 	
 	
-	
-	
 	@PostMapping("/forgot-pass")
 	public ResponseEntity<?> forgotPass(@Valid @RequestBody ForgotPasswordRequestDto forgotPassBody, HttpServletRequest request) throws Exception {
 
@@ -127,10 +132,11 @@ public class AuthController {
 					
 				UserEntity userEntity = userService.findByEmail(forgotPassBody.getEmail());
 			
+			//final String otp=otpService.random(6);
 				final String token = jwtTokenUtil.generateTokenOnForgotPass(userEntity.getEmail());
 				
 				
-				final String url = "To confirm your account, please click here : " + "http://localhost:8088" + "/forgot-pass-confirm" + "?token=" + token;
+				final String url = "To confirm your account, please click here : " + "http://localhost:8089" + "/forgot-pass-confirm" + "?token=" + token;
 				Calendar calender = Calendar.getInstance();
 				calender.add(Calendar.MINUTE, 15);
 				this.forgotPasswordServiceIntf.createForgotPasswordRequest(userEntity.getId(), token, calender.getTime());
@@ -140,7 +146,7 @@ public class AuthController {
 
 			} catch (ResourceNotFoundException e) {
 
-				return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "candidateNotFound"), HttpStatus.NOT_FOUND);
+				return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "userNotFound"), HttpStatus.NOT_FOUND);
 
 			}
 
@@ -152,4 +158,27 @@ public class AuthController {
 			return new ResponseEntity<>(new ErrorResponseDto("Logout Successfully", "logoutSuccess"), HttpStatus.OK);
 
 		}
+	 
+	 @PostMapping("/verifyAccount")
+	 public ResponseEntity<?> verifyAccount(@RequestBody UserEntity userEntity){
+		 
+		 try {
+				
+				UserEntity userEntity1 = userService.findByEmail(userEntity.getEmail());
+				final String otp=otpService.random(6);
+				OtpLoggerDto logger = new OtpLoggerDto();
+				logger.setOtp(otp);
+				Calendar calender = Calendar.getInstance();
+				calender.add(Calendar.MINUTE, 5);
+				logger.setExpireAt(calender.getTime());
+				loggerService.createLogger(logger, userEntity1);
+				final String url = "To confirm your account, please click here : " + "/" + "?otp=" + otp;
+				emailService.sendSimpleMessage(userEntity.getEmail(),"subject" , url);
+				return new ResponseEntity<>(new SuccessResponseDto("Otp sent on your Registerd Email", "otpSend", null), HttpStatus.OK);
+
+			} catch (ResourceNotFoundException e) {
+
+				return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "userNotFound"), HttpStatus.NOT_FOUND);
+	 }
+	 }
 }

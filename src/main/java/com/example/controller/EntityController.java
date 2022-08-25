@@ -57,7 +57,7 @@ public class EntityController {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@PreAuthorize("hasRole('getAllEntity')")
+	//@PreAuthorize("hasRole('getAllEntity')")
 	@GetMapping("/entity")
 	public ResponseEntity<List<EntityDto>> getAllEntity(@RequestParam(defaultValue = "") String search,
 			@RequestParam(defaultValue = "1") String pageNo, @RequestParam(defaultValue = "25") String size){

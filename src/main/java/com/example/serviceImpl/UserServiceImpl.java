@@ -1,6 +1,7 @@
 package com.example.serviceImpl;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,10 +15,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.dto.ChangePasswordDto;
 import com.example.dto.ForgotPasswordDto;
 import com.example.dto.IPermissionDto;
 import com.example.dto.IUserDto;
 import com.example.dto.RoleIdListDto;
+import com.example.dto.UserDataDto;
 import com.example.dto.UserDto;
 import com.example.entities.Forgot_password_request;
 import com.example.entities.UserEntity;
@@ -30,6 +33,7 @@ import com.example.service.ForgotPasswordServiceIntf;
 import com.example.service.UserService;
 import com.example.utils.JwtTokenUtil;
 import com.example.utils.PaginationUsingFromTo;
+
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -47,6 +51,12 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private ForgotPasswordRequestRepository forgotPasswordRequestRepository;
+	
+	@Autowired
+	private UserRoleRepository userRoleRepository;
+	
+	@Autowired
+	private RolePermissionRepository rolePermissionRepository;
 	
 	
 	public UserServiceImpl(UserRepository userRepository) {
@@ -161,11 +171,6 @@ public class UserServiceImpl implements UserService{
 		
 	}
 	
-	@Autowired
-	private UserRoleRepository userRoleRepository;
-	
-	@Autowired
-	private RolePermissionRepository rolePermissionRepository;
 	
 	@Override
 	public List<IPermissionDto> getUserPermission(Long userId) throws IOException {
@@ -183,4 +188,50 @@ public class UserServiceImpl implements UserService{
 
 	}
 	
+	@Override
+	public void changePassword(Long id, ChangePasswordDto userBody, HttpServletRequest request)
+			throws ResourceNotFoundException {
+
+		UserEntity user = userRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
+		final String requestTokenHeader = request.getHeader("Authorization");
+		String email = null;
+		String jwtToken = null;
+		
+		jwtToken = requestTokenHeader.substring(7);
+		email = jwtTokenUtil.getEmailFromToken(jwtToken);
+		System.out.println("object>>"+email);
+		
+		UserDto userdata = new UserDto();
+		userdata.setEmail(email.toString());
+		System.out.println("data>>>"+userdata);
+		
+		if (userdata.getEmail().equals(user.getEmail()) ) {
+			System.out.println("dto>>"+userdata.getEmail()+"entity>>"+user.getEmail());
+			if (!bcryptEncoder.matches(userBody.getNewPassword(), user.getPassword())) {
+ 
+				if (bcryptEncoder.matches(userBody.getPassword(), user.getPassword())) {
+
+					user.setPassword(bcryptEncoder.encode(userBody.getNewPassword()));
+					if (userBody.getNewPassword().equals(userBody.getConfPassword())) {
+						user.setPassword(bcryptEncoder.encode(userBody.getNewPassword()));
+					} else {
+						throw new ResourceNotFoundException("new password and confirm password must be same");
+					}
+
+				} else {
+
+					throw new ResourceNotFoundException("Please enter old password correct");
+				}
+
+			} else {
+				throw new ResourceNotFoundException("password must be differ from old password");
+			}
+
+		} else {
+			throw new ResourceNotFoundException("Access Denied");
+		}
+		
+		
+	}
 }

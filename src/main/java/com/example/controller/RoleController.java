@@ -2,10 +2,8 @@ package com.example.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.PostRemove;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -94,7 +92,6 @@ public class RoleController {
 	
 	@PreAuthorize("hasRole('getRoleAndPermissionById')")
 	@GetMapping("/permission/{id}")
-	//@Cacheable(value="users",key="roleId",unless = "#result.followers < 12000")
 	public ResponseEntity<?> getRoleAndPermissionById(@PathVariable(value = "id") Long roleId) {
 
 		try {

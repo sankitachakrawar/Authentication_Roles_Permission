@@ -27,7 +27,7 @@ public class UserRoleController {
 	@Autowired
 	private UserRoleService userRoleService;
 	
-	@PreAuthorize("hasRole('assignRoleToUser')")
+	//@PreAuthorize("hasRole('assignRoleToUser')")
 	@PostMapping("/assignRole")
 	public ResponseEntity<?> assignRoleToUser(@RequestBody AssignRole assignRole,HttpServletRequest request){
 		

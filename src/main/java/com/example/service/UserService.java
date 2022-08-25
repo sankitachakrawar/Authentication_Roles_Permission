@@ -5,11 +5,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
+
+import com.example.dto.ChangePasswordDto;
 import com.example.dto.ForgotPasswordDto;
 import com.example.dto.IPermissionDto;
 import com.example.dto.IUserDto;
 import com.example.dto.UserDto;
 import com.example.entities.UserEntity;
+import com.example.exceptionHandling.ResourceNotFoundException;
 
 public interface UserService {
 
@@ -31,4 +34,7 @@ public interface UserService {
 			@Valid ForgotPasswordDto userBody, HttpServletRequest request);
 	
 	List<IPermissionDto> getUserPermission(Long userId) throws IOException;
+	
+	void changePassword(Long userId, ChangePasswordDto userBody, HttpServletRequest request) throws ResourceNotFoundException;
+
 }

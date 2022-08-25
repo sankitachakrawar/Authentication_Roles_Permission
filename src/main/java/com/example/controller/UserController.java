@@ -4,7 +4,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.dto.ChangePasswordDto;
 import com.example.dto.ErrorResponseDto;
 import com.example.dto.ForgotPasswordDto;
 import com.example.dto.IUserDto;
@@ -53,7 +54,6 @@ public class UserController {
 	
 	@PreAuthorize("hasRole('updateUser')")
 	@PutMapping("/user/{id}")
-	//@CachePut(value="user",key="#user.id")
 	public ResponseEntity<?> updateUser(@Valid @RequestBody UserEntity user,@PathVariable Long id){
 		
 		this.userService.updateUser(user, id);
@@ -64,7 +64,6 @@ public class UserController {
 	
 	@PreAuthorize("hasRole('deleteUsers')")
 	@DeleteMapping("/user/{id}")
-	//@CacheEvict(value="user",key="#id")
 	public ResponseEntity<?> deleteUsers(@PathVariable Long id){
 		userService.deleteUsers(id);
 		return new  ResponseEntity<>("User deleted sucesssfully!!",HttpStatus.OK);
@@ -72,7 +71,6 @@ public class UserController {
 	
 	@PreAuthorize("hasRole('getSingleUser')")
 	@GetMapping("/user/{id}")
-	//@Cacheable(value = "users", key = "#id")
 	public ResponseEntity<UserEntity> getSingleUser(@PathVariable Long id){
 		
 		return ResponseEntity.ok(this.userService.getUserById(id));
@@ -93,4 +91,25 @@ public class UserController {
 	  
 	 }
 	  }
+	 
+	 //@PreAuthorize("hasRole('editUser')")
+		@PutMapping("/changePass/{id}")
+		public ResponseEntity<?> changePasswords(@PathVariable(value = "id") Long userId,
+				@Valid @RequestBody ChangePasswordDto userBody, HttpServletRequest request)
+				throws ResourceNotFoundException {
+
+			try {
+
+				userService.changePassword(userId, userBody, request);
+				return new ResponseEntity<>(new SuccessResponseDto("password Updated", "password Updated succefully", null),
+						HttpStatus.OK);
+
+			} catch (ResourceNotFoundException e) {
+
+				return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "Access Denied"), HttpStatus.BAD_GATEWAY);
+
+			}
+
+		}
+	 
 }
