@@ -7,7 +7,10 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.entities.SPRequestEntity;
 import com.example.entities.UserEntity;
+import com.example.repository.AuthRepository;
 import com.example.repository.UserRepository;
 import com.example.service.AuthService;
 
@@ -18,6 +21,9 @@ public class AuthServiceImpl implements AuthService{
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private AuthRepository authRepository;
 	
 	@Override
 	public UserEntity loginUser(String email, String password) throws Exception {
@@ -32,5 +38,6 @@ public class AuthServiceImpl implements AuthService{
 		}
 	}
 
+	
 
 }

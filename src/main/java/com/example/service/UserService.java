@@ -37,4 +37,6 @@ public interface UserService {
 	
 	void changePassword(Long userId, ChangePasswordDto userBody, HttpServletRequest request) throws ResourceNotFoundException;
 
+	public UserEntity getUsers(Long id);
+	
 }

@@ -1,6 +1,5 @@
 package com.example.dto;
 
-import java.util.Date;
 
 public class UserDataDto {
 
@@ -15,8 +14,7 @@ public class UserDataDto {
 
 	}
 
-	public UserDataDto(Long userId, String name, String email, String universityName, String highestQualification,
-			Integer yearOfPassing, Date dateOfJoining) {
+	public UserDataDto(Long userId, String name, String email) {
 
 		super();
 		this.userId = userId;
@@ -60,6 +58,11 @@ public class UserDataDto {
 
 		this.email = email;
 
+	}
+
+	@Override
+	public String toString() {
+		return "UserDataDto [userId=" + userId + ", name=" + name + ", email=" + email + "]";
 	}
 
 	

@@ -92,16 +92,16 @@ public class UserController {
 	 }
 	  }
 	 
-	 //@PreAuthorize("hasRole('editUser')")
+	 @PreAuthorize("hasRole('changePass')")
 		@PutMapping("/changePass/{id}")
-		public ResponseEntity<?> changePasswords(@PathVariable(value = "id") Long userId,
+		public ResponseEntity<?> changePasswords(@PathVariable(value = "id") Long id,
 				@Valid @RequestBody ChangePasswordDto userBody, HttpServletRequest request)
 				throws ResourceNotFoundException {
 
 			try {
 
-				userService.changePassword(userId, userBody, request);
-				return new ResponseEntity<>(new SuccessResponseDto("password Updated", "password Updated succefully", null),
+				userService.changePassword(id, userBody, request);
+				return new ResponseEntity<>(new SuccessResponseDto("password Updated", "password Updated successfully", null),
 						HttpStatus.OK);
 
 			} catch (ResourceNotFoundException e) {
@@ -111,5 +111,12 @@ public class UserController {
 			}
 
 		}
+	 //for stored procedure
+	 @GetMapping("/users/{id}")
+	 public ResponseEntity<?> totalCount(@PathVariable(value = "id") Long id){
+		 return new ResponseEntity<>(userService.getUsers(id),HttpStatus.OK);
+		 
+	 }
+	 
 	 
 }

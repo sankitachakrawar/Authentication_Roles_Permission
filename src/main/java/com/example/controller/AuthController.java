@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,11 @@ import com.example.dto.LoggerDto;
 import com.example.dto.OtpLoggerDto;
 import com.example.dto.SuccessResponseDto;
 import com.example.dto.UserDto;
+import com.example.entities.SPRequestEntity;
 import com.example.entities.UserEntity;
 import com.example.exceptionHandling.ResourceNotFoundException;
 import com.example.repository.UserRepository;
+import com.example.service.AuthService;
 import com.example.service.EmailService;
 import com.example.service.ForgotPasswordServiceIntf;
 import com.example.service.LoggerServiceInterface;
@@ -98,7 +101,6 @@ public class AuthController {
 		try {
 
 			UserEntity userEntity= userService.findByEmail(authenticationRequest.getEmail());
-
 			if (!userServiceImpl.comparePassword(authenticationRequest.getPassword(), userEntity.getPassword())) {
 
 				return new ResponseEntity<>(new ErrorResponseDto("Invalid Credential", "invalidCreds"), HttpStatus.UNAUTHORIZED);
@@ -112,7 +114,7 @@ public class AuthController {
 			LoggerDto logger = new LoggerDto();
 			logger.setToken(token);
 			Calendar calender = Calendar.getInstance();
-			calender.add(Calendar.HOUR_OF_DAY, 5);
+			calender.add(Calendar.MINUTE, 15);
 			logger.setExpireAt(calender.getTime());
 			loggerServiceInterface.createLogger(logger,userEntity);
 			return new ResponseEntity(new SuccessResponseDto("Success", "success", new AuthResponseDto(token,userEntity.getEmail(),userEntity.getName(),permissions,userEntity.getId())), HttpStatus.OK);
@@ -155,9 +157,13 @@ public class AuthController {
 		public ResponseEntity<?> logoutUser(@RequestHeader("Authorization") String token, HttpServletRequest request) throws Exception {
 
 			loggerServiceInterface.logoutUser(token);
+		
 			return new ResponseEntity<>(new ErrorResponseDto("Logout Successfully", "logoutSuccess"), HttpStatus.OK);
 
 		}
+	
+	
+	
 	 
 	 @PostMapping("/verifyAccount")
 	 public ResponseEntity<?> verifyAccount(@RequestBody UserEntity userEntity){
@@ -181,4 +187,6 @@ public class AuthController {
 				return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "userNotFound"), HttpStatus.NOT_FOUND);
 	 }
 	 }
+	 
+	 
 }

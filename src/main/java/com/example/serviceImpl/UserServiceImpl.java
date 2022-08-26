@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.dto.ChangePasswordDto;
@@ -98,7 +100,7 @@ public class UserServiceImpl implements UserService{
 		userEntity.setName(user.getName());
 		userEntity.setEmail(user.getEmail());
 		userEntity.setAddress(user.getAddress());
-		userEntity.setPassword(user.getPassword());
+		userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
 		userEntity.setUsername(user.getUsername());
 		UserEntity entity=this.userRepository.save(userEntity);
 		return entity;
@@ -202,7 +204,7 @@ public class UserServiceImpl implements UserService{
 		email = jwtTokenUtil.getEmailFromToken(jwtToken);
 		System.out.println("object>>"+email);
 		
-		UserDto userdata = new UserDto();
+		UserDataDto userdata = new UserDataDto();
 		userdata.setEmail(email.toString());
 		System.out.println("data>>>"+userdata);
 		
@@ -215,6 +217,7 @@ public class UserServiceImpl implements UserService{
 					user.setPassword(bcryptEncoder.encode(userBody.getNewPassword()));
 					if (userBody.getNewPassword().equals(userBody.getConfPassword())) {
 						user.setPassword(bcryptEncoder.encode(userBody.getNewPassword()));
+						userRepository.save(user);
 					} else {
 						throw new ResourceNotFoundException("new password and confirm password must be same");
 					}
@@ -232,6 +235,15 @@ public class UserServiceImpl implements UserService{
 			throw new ResourceNotFoundException("Access Denied");
 		}
 		
+		
+	}
+
+	
+	@Override
+	public UserEntity getUsers(@PathVariable Long id) {
+		
+		UserEntity entity= this.userRepository.getUser(id);
+		return entity;
 		
 	}
 }
