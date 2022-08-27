@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -68,6 +69,9 @@ public class AuthController {
 	
 	@Autowired
 	private OtpGenerator otpService;
+	
+	 @Autowired
+	 private AuthService authService;
 	
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUsers(@Valid @RequestBody UserDto userDto){
@@ -162,9 +166,6 @@ public class AuthController {
 
 		}
 	
-	
-	
-	 
 	 @PostMapping("/verifyAccount")
 	 public ResponseEntity<?> verifyAccount(@RequestBody UserEntity userEntity){
 		 
@@ -189,4 +190,9 @@ public class AuthController {
 	 }
 	 
 	 
+	 //for database function
+	 @GetMapping("/getUserById/{id}")
+	 public ResponseEntity<?> getUserById(@PathVariable Long id){
+		return new ResponseEntity<>(authService.getUserById(id),HttpStatus.OK);
+	 }
 }

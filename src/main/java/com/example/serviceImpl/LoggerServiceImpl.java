@@ -53,6 +53,7 @@ public class LoggerServiceImpl implements LoggerServiceInterface {
 		final String token1 = token.substring(7);
 			loggerRepository.removeByToken(token1);
 			
+			
 	}
 
 	

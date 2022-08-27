@@ -1,5 +1,10 @@
 package com.example.serviceImpl;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,11 +24,16 @@ public class EmailServiceImpl implements EmailService{
 	  @Override
 	  public String sendMail(String emailTo, String subject, String text, UserEntity userEntity) {
 		  SimpleMailMessage simpleMailMessage=new SimpleMailMessage();
-	  simpleMailMessage.setFrom("demo83935@gmail.com");
-	  simpleMailMessage.setTo(userEntity.getEmail());
+		  simpleMailMessage.setFrom("demo83935@gmail.com");
+		  simpleMailMessage.setTo(userEntity.getEmail());
+		  
+		  simpleMailMessage.setSubject("Apply sucessfully");
+		  simpleMailMessage.setText("Text demo");
+//		Queue<String> queue=new LinkedList<>();
+//		queue.add(emailTo);
+//		queue.add(subject);
+//		queue.add(text);
 	  
-	  simpleMailMessage.setSubject("Apply sucessfully");
-	  simpleMailMessage.setText("Text demo");
 	  javaMailSender.send(simpleMailMessage); 
 	  return "Email Send";
 	  }

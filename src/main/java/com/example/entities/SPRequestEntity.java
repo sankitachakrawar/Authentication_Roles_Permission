@@ -29,16 +29,6 @@ public class SPRequestEntity implements Serializable {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id",unique = true)
 	private UserEntity userId;
-	
-	@Column(name = "entity_id")
-	private ArrayList<Long> EntityId;
-	
-	@Column(name = "permission_id")
-	private ArrayList<Long> PermissionId;
-	
-	@Column(name = "role_id")
-	private ArrayList<Long> RoleId;
-	
 
 	@Column(name = "path")
 	private String path;
@@ -51,11 +41,10 @@ public class SPRequestEntity implements Serializable {
 	private Boolean isActive = true;
 
 	@Column(name = "created_at")
-	@CreationTimestamp
 	private Date createdAt;
 
 	@Column(name = "updated_at")
-	@UpdateTimestamp
+	
 	private Date updatedAt;
 
 	public Long getId() {
@@ -72,30 +61,6 @@ public class SPRequestEntity implements Serializable {
 
 	public void setUserId(UserEntity userId) {
 		this.userId = userId;
-	}
-
-	public ArrayList<Long> getEntityId() {
-		return EntityId;
-	}
-
-	public void setEntityId(ArrayList<Long> entityId) {
-		EntityId = entityId;
-	}
-
-	public ArrayList<Long> getPermissionId() {
-		return PermissionId;
-	}
-
-	public void setPermissionId(ArrayList<Long> permissionId) {
-		PermissionId = permissionId;
-	}
-
-	public ArrayList<Long> getRoleId() {
-		return RoleId;
-	}
-
-	public void setRoleId(ArrayList<Long> roleId) {
-		RoleId = roleId;
 	}
 
 	public String getPath() {
@@ -121,7 +86,7 @@ public class SPRequestEntity implements Serializable {
 	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
 	}
-
+	@CreationTimestamp
 	public Date getCreatedAt() {
 		return createdAt;
 	}
@@ -129,7 +94,7 @@ public class SPRequestEntity implements Serializable {
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
-
+	@UpdateTimestamp
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
@@ -147,15 +112,11 @@ public class SPRequestEntity implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public SPRequestEntity(Long id, com.example.entities.UserEntity userId, ArrayList<Long> entityId,
-			ArrayList<Long> permissionId, ArrayList<Long> roleId, String path,
+	public SPRequestEntity(Long id, com.example.entities.UserEntity userId, String path,
 			com.example.entities.UserEntity createdBy, Boolean isActive, Date createdAt, Date updatedAt) {
 		super();
 		this.id = id;
 		this.userId = userId;
-		EntityId = entityId;
-		PermissionId = permissionId;
-		RoleId = roleId;
 		this.path = path;
 		this.createdBy = createdBy;
 		this.isActive = isActive;
