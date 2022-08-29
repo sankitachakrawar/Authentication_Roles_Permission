@@ -13,9 +13,11 @@ public interface LoggerServiceInterface {
 
 	void createLogger(LoggerDto loggerDto, UserEntity user);
 
-	void logoutUser(String token);
+	//void logoutUser(String token);
 
 	List<LoggerEntity> getAllDetails();
+
+	void logoutUser(String token, LoggerEntity entity);
 	
 }
 

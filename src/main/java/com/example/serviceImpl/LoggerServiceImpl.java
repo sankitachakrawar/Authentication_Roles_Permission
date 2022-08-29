@@ -48,11 +48,11 @@ public class LoggerServiceImpl implements LoggerServiceInterface {
 
 	@Transactional
 	@Override
-	public void logoutUser(String token) {
-		LoggerEntity entity=new LoggerEntity();
+	public void logoutUser(String token,LoggerEntity entity) {
+		
 		final String token1 = token.substring(7);
 			loggerRepository.removeByToken(token1);
-			
+			this.loggerRepository.delete(entity);
 			
 	}
 

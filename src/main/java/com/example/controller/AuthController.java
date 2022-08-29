@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +24,7 @@ import com.example.dto.LoggerDto;
 import com.example.dto.OtpLoggerDto;
 import com.example.dto.SuccessResponseDto;
 import com.example.dto.UserDto;
+import com.example.entities.LoggerEntity;
 import com.example.entities.SPRequestEntity;
 import com.example.entities.UserEntity;
 import com.example.exceptionHandling.ResourceNotFoundException;
@@ -158,9 +158,9 @@ public class AuthController {
 
 		}
 	 @GetMapping("/logout")
-		public ResponseEntity<?> logoutUser(@RequestHeader("Authorization") String token, HttpServletRequest request) throws Exception {
+		public ResponseEntity<?> logoutUser(@RequestHeader("Authorization") String token,LoggerEntity entity, HttpServletRequest request) throws Exception {
 
-			loggerServiceInterface.logoutUser(token);
+			loggerServiceInterface.logoutUser(token,entity);
 		
 			return new ResponseEntity<>(new ErrorResponseDto("Logout Successfully", "logoutSuccess"), HttpStatus.OK);
 

@@ -1,15 +1,10 @@
 package com.example.serviceImpl;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
-import javax.mail.internet.MimeMessage;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-
 import com.example.entities.UserEntity;
 import com.example.service.EmailService;
 
@@ -19,7 +14,8 @@ public class EmailServiceImpl implements EmailService{
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	
+	@Autowired
+    private JmsTemplate jmsTemplate;
 
 	  @Override
 	  public String sendMail(String emailTo, String subject, String text, UserEntity userEntity) {
@@ -29,10 +25,7 @@ public class EmailServiceImpl implements EmailService{
 		  
 		  simpleMailMessage.setSubject("Apply sucessfully");
 		  simpleMailMessage.setText("Text demo");
-//		Queue<String> queue=new LinkedList<>();
-//		queue.add(emailTo);
-//		queue.add(subject);
-//		queue.add(text);
+		 jmsTemplate.convertAndSend("Mail send",simpleMailMessage);
 	  
 	  javaMailSender.send(simpleMailMessage); 
 	  return "Email Send";

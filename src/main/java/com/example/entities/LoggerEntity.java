@@ -19,8 +19,8 @@ import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "logger")
-@Where(clause = "is_active = true")
-@SQLDelete(sql="UPDATE logger SET is_active=false WHERE id=?")
+//@Where(clause = "is_active = true")
+//@SQLDelete(sql="UPDATE logger SET is_active=false WHERE id=?")
 public class LoggerEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -31,7 +31,7 @@ public class LoggerEntity implements Serializable {
 	private Long loggerid;
 
 	@OneToOne(fetch = FetchType.LAZY)   
-	@JoinColumn(name = "l_id")
+	@JoinColumn(name = "user_id")
 	private UserEntity id;
 
 	@Column(name = "token", length = 512)
@@ -44,7 +44,7 @@ public class LoggerEntity implements Serializable {
 	private Date expireAt;
 
 	@Column(name = "is_active")
-	private boolean isActive = true;
+	private Boolean isActive = true;
 
 	public Long getLoggerid() {
 		return loggerid;
@@ -85,11 +85,11 @@ public class LoggerEntity implements Serializable {
 		this.expireAt = expireAt;
 	}
 
-	public boolean isActive() {
+	public Boolean isActive() {
 		return isActive;
 	}
 
-	public void setActive(boolean isActive) {
+	public void setActive(Boolean isActive) {
 		this.isActive = isActive;
 	}
 
@@ -102,7 +102,7 @@ public class LoggerEntity implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public LoggerEntity(Long loggerid, UserEntity id, String token, Date createdAt, Date expireAt, boolean isActive) {
+	public LoggerEntity(Long loggerid, UserEntity id, String token, Date createdAt, Date expireAt, Boolean isActive) {
 		super();
 		this.loggerid = loggerid;
 		this.id = id;
@@ -110,6 +110,12 @@ public class LoggerEntity implements Serializable {
 		this.createdAt = createdAt;
 		this.expireAt = expireAt;
 		this.isActive = isActive;
+	}
+
+	@Override
+	public String toString() {
+		return "LoggerEntity [loggerid=" + loggerid + ", id=" + id + ", token=" + token + ", createdAt=" + createdAt
+				+ ", expireAt=" + expireAt + ", isActive=" + isActive + "]";
 	}
 	
 	

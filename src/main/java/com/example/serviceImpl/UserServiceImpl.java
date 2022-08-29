@@ -1,7 +1,6 @@
 package com.example.serviceImpl;
 
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.dto.ChangePasswordDto;
@@ -31,7 +29,6 @@ import com.example.repository.ForgotPasswordRequestRepository;
 import com.example.repository.RolePermissionRepository;
 import com.example.repository.UserRepository;
 import com.example.repository.UserRoleRepository;
-import com.example.service.ForgotPasswordServiceIntf;
 import com.example.service.UserService;
 import com.example.utils.JwtTokenUtil;
 import com.example.utils.PaginationUsingFromTo;
