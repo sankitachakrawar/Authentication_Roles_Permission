@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 
 import com.example.dto.ErrorResponseDto;
@@ -99,5 +100,16 @@ public class ExceptionHandlerControllerAdvice {
 		return error;
 
 	}
+//	
+//	@ExceptionHandler(MultipartException.class)
+//	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+//	public @ResponseBody ErrorResponseDto fileUploadException(final MultipartException exception) {
+//
+//		ErrorResponseDto error = new ErrorResponseDto();
+//		error.setMessage("Please upload file");
+//		error.setMsgKey("pleaseUploadFile");
+//		return error;
+//
+//	}
 	
 }

@@ -25,9 +25,9 @@ public class EmailServiceImpl implements EmailService{
 		  
 		  simpleMailMessage.setSubject("Apply sucessfully");
 		  simpleMailMessage.setText("Text demo");
-		 jmsTemplate.convertAndSend("Mail send",simpleMailMessage);
-	  
-	  javaMailSender.send(simpleMailMessage); 
+		  //queue implementation
+		 jmsTemplate.convertAndSend(simpleMailMessage);
+	//  javaMailSender.send(simpleMailMessage); 
 	  return "Email Send";
 	  }
 

@@ -118,9 +118,11 @@ public class AuthController {
 			LoggerDto logger = new LoggerDto();
 			logger.setToken(token);
 			Calendar calender = Calendar.getInstance();
-			calender.add(Calendar.MINUTE, 15);
+			calender.add(Calendar.MINUTE, 2);
 			logger.setExpireAt(calender.getTime());
+			System.out.println(calender.getTime());
 			loggerServiceInterface.createLogger(logger,userEntity);
+			
 			return new ResponseEntity(new SuccessResponseDto("Success", "success", new AuthResponseDto(token,userEntity.getEmail(),userEntity.getName(),permissions,userEntity.getId())), HttpStatus.OK);
 			
 		} catch (ResourceNotFoundException e) {
@@ -158,9 +160,9 @@ public class AuthController {
 
 		}
 	 @GetMapping("/logout")
-		public ResponseEntity<?> logoutUser(@RequestHeader("Authorization") String token,LoggerEntity entity, HttpServletRequest request) throws Exception {
+		public ResponseEntity<?> logoutUser(@RequestHeader("Authorization") String token, HttpServletRequest request) throws Exception {
 
-			loggerServiceInterface.logoutUser(token,entity);
+			loggerServiceInterface.logoutUser(token);
 		
 			return new ResponseEntity<>(new ErrorResponseDto("Logout Successfully", "logoutSuccess"), HttpStatus.OK);
 

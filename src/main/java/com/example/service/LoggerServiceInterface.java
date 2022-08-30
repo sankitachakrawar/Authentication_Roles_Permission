@@ -17,7 +17,7 @@ public interface LoggerServiceInterface {
 
 	List<LoggerEntity> getAllDetails();
 
-	void logoutUser(String token, LoggerEntity entity);
+	void logoutUser(String token);
 	
 }
 

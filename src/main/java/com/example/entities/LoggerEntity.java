@@ -19,8 +19,8 @@ import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "logger")
-//@Where(clause = "is_active = true")
-//@SQLDelete(sql="UPDATE logger SET is_active=false WHERE id=?")
+@Where(clause = "is_active = true")
+@SQLDelete(sql="UPDATE logger SET is_active=false WHERE id=?")
 public class LoggerEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -92,11 +92,6 @@ public class LoggerEntity implements Serializable {
 	public void setActive(Boolean isActive) {
 		this.isActive = isActive;
 	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	public LoggerEntity() {
 		super();
 		// TODO Auto-generated constructor stub
