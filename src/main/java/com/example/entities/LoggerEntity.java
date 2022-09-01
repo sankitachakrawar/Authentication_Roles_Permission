@@ -1,7 +1,6 @@
 package com.example.entities;
 
 import java.io.Serializable;
-
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,6 +40,7 @@ public class LoggerEntity implements Serializable {
 	@CreationTimestamp
 	private Date createdAt;
 	
+	@Column(name = "expire_at")
 	private Date expireAt;
 
 	@Column(name = "is_active")

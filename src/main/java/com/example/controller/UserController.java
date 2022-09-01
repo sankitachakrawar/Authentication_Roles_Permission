@@ -71,9 +71,9 @@ public class UserController {
 	
 	@PreAuthorize("hasRole('getSingleUser')")
 	@GetMapping("/user/{id}")
-	public ResponseEntity<UserEntity> getSingleUser(@PathVariable Long id){
+	public ResponseEntity<UserDto> getSingleUser(@PathVariable Long id){
 		
-		return ResponseEntity.ok(this.userService.getUserById(id));
+		return ResponseEntity.ok(this.userService.fetchUserById(id));
 		
 	}
 	
@@ -117,6 +117,8 @@ public class UserController {
 		 return new ResponseEntity<>(userService.getUsers(id),HttpStatus.OK);
 		 
 	 }
+	 
+	 
 	 
 	 
 }

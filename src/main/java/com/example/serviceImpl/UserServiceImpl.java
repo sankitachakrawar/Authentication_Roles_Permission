@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -110,14 +112,6 @@ public class UserServiceImpl implements UserService{
 				orElseThrow(() -> new ResourceNotFoundException("users", "id", id));
 		this.userRepository.deleteById(id);
 		
-	}
-
-	@Override
-	public UserEntity getUserById(Long id) {
-		UserEntity userEntity  = this.userRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("users", "id", id));
-		
-		return userEntity;
 	}
 	 
 	@Override
@@ -243,4 +237,34 @@ public class UserServiceImpl implements UserService{
 		return entity;
 		
 	}
+
+	public UserEntity dtoToUser(UserDto userDto) {
+		UserEntity userEntity = new UserEntity();
+		userEntity.setName(userDto.getName());
+		userEntity.setEmail(userDto.getEmail());
+		userEntity.setAddress(userDto.getAddress());
+		userEntity.setUsername(userDto.getUsername());		
+		return userEntity;
+	}
+	
+	
+	public UserDto userToDto(UserEntity userEntity) {
+		UserDto userDto = new UserDto();
+		userDto.setName(userEntity.getName());
+		userDto.setEmail(userEntity.getEmail());
+		userDto.setAddress(userEntity.getAddress());
+		userDto.setUsername(userEntity.getUsername());
+		return userDto;
+
+	}
+	
+	@Override
+	public UserDto fetchUserById(Long id) {
+		UserEntity userEntity=this.userRepository.findById(id).
+				orElseThrow(() -> new ResourceNotFoundException("users", "id", id));
+		return this.userToDto(userEntity);
+	}
+
+
+	
 }

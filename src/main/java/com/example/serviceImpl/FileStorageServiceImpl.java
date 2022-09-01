@@ -113,33 +113,6 @@ public class FileStorageServiceImpl implements FileStorageService{
 
 	}
 	
-	@Override
-	public String getFolderName(String type) throws ResourceNotFoundException {
-
-		String folderPath = "";
-
-		switch (type) {
-
-		case "images":
-			folderPath = "images";
-			break;
-
-		case "test":
-			folderPath = "test";
-			break;
-
-		case "products":
-			folderPath = "products";
-			break;
-
-		default:
-			throw new ResourceNotFoundException("Invalid Upload Type");
-
-		}
-
-		return folderPath;
-
-	}
-
+	
 	
 }

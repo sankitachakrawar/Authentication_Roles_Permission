@@ -100,16 +100,16 @@ public class ExceptionHandlerControllerAdvice {
 		return error;
 
 	}
-//	
-//	@ExceptionHandler(MultipartException.class)
-//	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-//	public @ResponseBody ErrorResponseDto fileUploadException(final MultipartException exception) {
-//
-//		ErrorResponseDto error = new ErrorResponseDto();
-//		error.setMessage("Please upload file");
-//		error.setMsgKey("pleaseUploadFile");
-//		return error;
-//
-//	}
+	
+	@ExceptionHandler(MultipartException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	public @ResponseBody ErrorResponseDto fileUploadException(final MultipartException exception) {
+
+		ErrorResponseDto error = new ErrorResponseDto();
+		error.setMessage("Please upload file");
+		error.setMsgKey("pleaseUploadFile");
+		return error;
+
+	}
 	
 }

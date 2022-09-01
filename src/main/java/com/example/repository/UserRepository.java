@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.dto.IUserDto;
+import com.example.dto.UserDto;
 import com.example.entities.UserEntity;
 
 @Repository
@@ -23,6 +24,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>{
 	UserEntity findByEmail(String username);
 
 	UserEntity getUserByEmail(String email);
+	
 
 	Optional<UserEntity> findByIdAndIsActiveTrue(Long userId);
 

@@ -9,5 +9,7 @@ public interface IUserDto {
 	public String getEmail();
 	
 	public String getAddress();
+
+
 	
 }

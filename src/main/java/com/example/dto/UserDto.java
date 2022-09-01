@@ -7,7 +7,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class UserDto {
-
+	
+	
 	@NotEmpty
 	@Size(min=4,message="Name must be min of 4 characters !!")
 	private String name;
@@ -70,7 +71,7 @@ public class UserDto {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
+	
 	public UserDto() {
 		super();
 		// TODO Auto-generated constructor stub

@@ -13,6 +13,4 @@ public interface FileStorageService {
 	
 	public Resource loadFileAsResource(String fileName) throws MyFileNotFoundException;
 
-	
-	public String getFolderName(String type) throws ResourceNotFoundException;
 }

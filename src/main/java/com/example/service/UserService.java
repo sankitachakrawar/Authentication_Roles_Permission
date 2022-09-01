@@ -1,10 +1,13 @@
 package com.example.service;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 
 import com.example.dto.ChangePasswordDto;
 import com.example.dto.ForgotPasswordDto;
@@ -23,8 +26,6 @@ public interface UserService {
 	UserEntity updateUser(UserEntity user, Long id);
 	
 	void deleteUsers(Long id);
-	
-	UserEntity getUserById(Long id);
 
 	public UserEntity findByEmail(String email);
 
@@ -38,5 +39,7 @@ public interface UserService {
 	void changePassword(Long userId, ChangePasswordDto userBody, HttpServletRequest request) throws ResourceNotFoundException;
 
 	public UserEntity getUsers(Long id);
+	
+	public UserDto fetchUserById(Long id);
 	
 }

@@ -12,7 +12,7 @@ import com.example.repository.LoggerRepository;
 import com.example.service.LoggerServiceInterface;
 
 
-@Component
+//@Component
 @Service("LoggerServiceImpl")
 public class LoggerServiceImpl implements LoggerServiceInterface {
 

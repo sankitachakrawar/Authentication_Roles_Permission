@@ -24,8 +24,6 @@ import com.example.dto.LoggerDto;
 import com.example.dto.OtpLoggerDto;
 import com.example.dto.SuccessResponseDto;
 import com.example.dto.UserDto;
-import com.example.entities.LoggerEntity;
-import com.example.entities.SPRequestEntity;
 import com.example.entities.UserEntity;
 import com.example.exceptionHandling.ResourceNotFoundException;
 import com.example.repository.UserRepository;
@@ -110,17 +108,17 @@ public class AuthController {
 				return new ResponseEntity<>(new ErrorResponseDto("Invalid Credential", "invalidCreds"), HttpStatus.UNAUTHORIZED);
 			}
 			
-			System.out.println("DATA>>"+userEntity.getEmail());
+			//System.out.println("DATA>>"+userEntity.getEmail());
 			@SuppressWarnings("static-access")
-			final String token = jwtTokenUtil.generateTokenOnLogin(userEntity.getEmail(), userEntity.getPassword());
+			final String token = jwtTokenUtil.generateTokenOnLogin(userEntity.getEmail(),userEntity.getPassword());
 		
 			List<IPermissionDto> permissions = userService.getUserPermission(userEntity.getId());
 			LoggerDto logger = new LoggerDto();
 			logger.setToken(token);
 			Calendar calender = Calendar.getInstance();
-			calender.add(Calendar.MINUTE, 2);
+			calender.add(Calendar.MINUTE, 15);
 			logger.setExpireAt(calender.getTime());
-			System.out.println(calender.getTime());
+			//System.out.println("expire>>>>    "+calender.getTime());
 			loggerServiceInterface.createLogger(logger,userEntity);
 			
 			return new ResponseEntity(new SuccessResponseDto("Success", "success", new AuthResponseDto(token,userEntity.getEmail(),userEntity.getName(),permissions,userEntity.getId())), HttpStatus.OK);
@@ -146,7 +144,7 @@ public class AuthController {
 				
 				final String url = "To confirm your account, please click here : " + "http://localhost:8089" + "/forgot-pass-confirm" + "?token=" + token;
 				Calendar calender = Calendar.getInstance();
-				calender.add(Calendar.MINUTE, 15);
+				calender.add(Calendar.MINUTE, 5);
 				this.forgotPasswordServiceIntf.createForgotPasswordRequest(userEntity.getId(), token, calender.getTime());
 				
 				emailService.sendSimpleMessage(userEntity.getEmail(),"subject" , url);
@@ -168,28 +166,28 @@ public class AuthController {
 
 		}
 	
-	 @PostMapping("/verifyAccount")
-	 public ResponseEntity<?> verifyAccount(@RequestBody UserEntity userEntity){
-		 
-		 try {
-				
-				UserEntity userEntity1 = userService.findByEmail(userEntity.getEmail());
-				final String otp=otpService.random(6);
-				OtpLoggerDto logger = new OtpLoggerDto();
-				logger.setOtp(otp);
-				Calendar calender = Calendar.getInstance();
-				calender.add(Calendar.MINUTE, 5);
-				logger.setExpireAt(calender.getTime());
-				loggerService.createLogger(logger, userEntity1);
-				final String url = "To confirm your account, please click here : " + "/" + "?otp=" + otp;
-				emailService.sendSimpleMessage(userEntity.getEmail(),"subject" , url);
-				return new ResponseEntity<>(new SuccessResponseDto("Otp sent on your Registerd Email", "otpSend", null), HttpStatus.OK);
-
-			} catch (ResourceNotFoundException e) {
-
-				return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "userNotFound"), HttpStatus.NOT_FOUND);
-	 }
-	 }
+//	 @PostMapping("/verifyAccount")
+//	 public ResponseEntity<?> verifyAccount(@RequestBody UserEntity userEntity){
+//		 
+//		 try {
+//				
+//				UserEntity userEntity1 = userService.findByEmail(userEntity.getEmail());
+//				final String otp=otpService.random(6);
+//				OtpLoggerDto logger = new OtpLoggerDto();
+//				logger.setOtp(otp);
+//				Calendar calender = Calendar.getInstance();
+//				calender.add(Calendar.MINUTE, 5);
+//				logger.setExpireAt(calender.getTime());
+//				loggerService.createLogger(logger, userEntity1);
+//				final String url = "To confirm your account, please click here : " + "/" + "?otp=" + otp;
+//				emailService.sendSimpleMessage(userEntity.getEmail(),"subject" , url);
+//				return new ResponseEntity<>(new SuccessResponseDto("Otp sent on your Registerd Email", "otpSend", null), HttpStatus.OK);
+//
+//			} catch (ResourceNotFoundException e) {
+//
+//				return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "userNotFound"), HttpStatus.NOT_FOUND);
+//	 }
+//	 }
 	 
 	 
 	 //for database function
