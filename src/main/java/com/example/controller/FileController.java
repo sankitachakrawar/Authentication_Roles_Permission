@@ -57,8 +57,6 @@ public class FileController {
 	public ResponseEntity<?> downloadFile(@PathVariable String path, @PathVariable String fileName, HttpServletRequest request) {
 
 		Resource resource = null;
-
-		// Load file as Resource
 		try {
 
 			resource = fileStorageService.loadFileAsResource(path + "/" + fileName);
@@ -69,7 +67,6 @@ public class FileController {
 
 		}
 
-		// Try to determine file's content type
 		String contentType = null;
 
 		try {
@@ -82,7 +79,6 @@ public class FileController {
 
 		}
 
-		// Fallback to the default content type if type could not be determined
 		if (contentType == null) {
 
 			contentType = "application/octet-stream";
