@@ -48,6 +48,9 @@ public class Orders {
 	@CreationTimestamp
 	private Date createdAt;
 	
+	@Column(name="payment_id")
+	private String paymentId;
+	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private UserEntity uid;
@@ -126,6 +129,14 @@ public class Orders {
 	
 	
 
+	public String getPaymentId() {
+		return paymentId;
+	}
+
+	public void setPaymentId(String paymentId) {
+		this.paymentId = paymentId;
+	}
+
 	public UserEntity getUid() {
 		return uid;
 	}
@@ -139,10 +150,8 @@ public class Orders {
 		// TODO Auto-generated constructor stub
 	}
 
-	
-
 	public Orders(Long id, String orderId, String amount, int amount_paid, int amount_due, String currency,
-			String receipt, String status, Date createdAt, UserEntity uid, String token) {
+			String receipt, String status, Date createdAt, String paymentId, UserEntity uid) {
 		super();
 		this.id = id;
 		this.orderId = orderId;
@@ -153,24 +162,12 @@ public class Orders {
 		this.receipt = receipt;
 		this.status = status;
 		this.createdAt = createdAt;
+		this.paymentId = paymentId;
 		this.uid = uid;
-		this.token = token;
 	}
 
-
-	@Transient
-	private String token;
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
 	
-	
-	
+
 	
 	
 }
