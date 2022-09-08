@@ -9,8 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
@@ -48,12 +46,14 @@ public class Orders {
 	@CreationTimestamp
 	private Date createdAt;
 	
-	@Column(name="payment_id")
+	@Column(name="paymentId")
 	private String paymentId;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private UserEntity uid;
+	
+	private String signature;
 
 	public Long getId() {
 		return id;
@@ -126,9 +126,6 @@ public class Orders {
 		this.orderId = orderId;
 	}
 
-	
-	
-
 	public String getPaymentId() {
 		return paymentId;
 	}
@@ -145,13 +142,21 @@ public class Orders {
 		this.uid = uid;
 	}
 
+	public String getSignature() {
+		return signature;
+	}
+
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
+
 	public Orders() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public Orders(Long id, String orderId, String amount, int amount_paid, int amount_due, String currency,
-			String receipt, String status, Date createdAt, String paymentId, UserEntity uid) {
+			String receipt, String status, Date createdAt, String paymentId, UserEntity uid, String signature) {
 		super();
 		this.id = id;
 		this.orderId = orderId;
@@ -164,10 +169,15 @@ public class Orders {
 		this.createdAt = createdAt;
 		this.paymentId = paymentId;
 		this.uid = uid;
+		this.signature = signature;
 	}
 
-	
-
-	
+	@Override
+	public String toString() {
+		return "Orders [id=" + id + ", orderId=" + orderId + ", amount=" + amount + ", amount_paid=" + amount_paid
+				+ ", amount_due=" + amount_due + ", currency=" + currency + ", receipt=" + receipt + ", status="
+				+ status + ", createdAt=" + createdAt + ", paymentId=" + paymentId + ", uid=" + uid + ", signature="
+				+ signature + "]";
+	}	
 	
 }

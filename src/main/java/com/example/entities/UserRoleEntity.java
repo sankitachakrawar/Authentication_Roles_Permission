@@ -23,9 +23,6 @@ import org.hibernate.annotations.Where;
 @AssociationOverrides({ @AssociationOverride(name = "pk.user", joinColumns = @JoinColumn(name = "user_id")), @AssociationOverride(name = "pk.role", joinColumns = @JoinColumn(name = "role_id")) })
 public class UserRoleEntity implements java.io.Serializable {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private UserRoleId pk = new UserRoleId();

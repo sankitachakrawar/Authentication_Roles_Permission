@@ -1,29 +1,17 @@
 package com.example.serviceImpl;
 
-import java.awt.desktop.UserSessionEvent;
-
-import java.security.Principal;
 import java.util.List;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import com.example.entities.OrderResponse;
 import com.example.entities.Orders;
-import com.example.entities.UserEntity;
 import com.example.repository.PayRepository;
 import com.example.repository.UserRepository;
 import com.example.service.PayService;
 import com.example.utils.JwtTokenUtil;
 import com.razorpay.Order;
-import com.razorpay.Payment;
 import com.razorpay.RazorpayClient;
-import com.razorpay.RazorpayException;
 
 @Service
 public class PayServiceImpl implements PayService{
@@ -42,7 +30,7 @@ public class PayServiceImpl implements PayService{
 		
 		int amt=Integer.parseInt(amount);
 		RazorpayClient razorpayClient=new RazorpayClient("rzp_test_R9M7Z1BLAK9M6i","rgjrq8doiivTeAdDhl4yzOK6");
-		UserEntity entity =new UserEntity();
+		//UserEntity entity =new UserEntity();
 		
 		JSONObject jsonObject=new JSONObject();
 		jsonObject.put("amount", amt*100);
@@ -65,21 +53,19 @@ public class PayServiceImpl implements PayService{
 		orderRequest.setCurrency(order.get("currency"));
 		orderRequest.setPaymentId(null);
 		
-		final String requestTokenHeader = request.getHeader("Authorization");
-		String email = null;
-		String jwtToken = null;
+		//final String requestTokenHeader = request.getHeader("Authorization");
+		//String email = null;
+		//String jwtToken = null;
 		
-		jwtToken = requestTokenHeader.substring(7);
-		email = jwtTokenUtil.getEmailFromToken(jwtToken);
+		//jwtToken = requestTokenHeader.substring(7);
+		//email = jwtTokenUtil.getEmailFromToken(jwtToken);
 	
-		UserEntity userEntity = userRepository.getUserByEmail(email);
-		orderRequest.setUid(userEntity);
+		//UserEntity userEntity = userRepository.getUserByEmail(email);
+		//orderRequest.setUid(userEntity);
 		
 		this.payRepository.save(orderRequest);
 		
 			return order;
-		
-		
 	}
 
 	@Override
@@ -89,19 +75,44 @@ public class PayServiceImpl implements PayService{
 	}
 
 	@Override
-	public Orders updatePayment(@RequestBody Map<String, Object> data) {
+	public Orders executePayment(Orders obj) {
+		
+		Orders object=this.payRepository.findByOrderId(obj.getOrderId());
+		System.out.println("order1>>"+obj.getOrderId());
+		object.setPaymentId(obj.getPaymentId());
+		object.setSignature(obj.getSignature());
+		
+		Orders order2=this.payRepository.save(object);
+		System.out.println("Order2>>"+order2);
+		return order2;
 
-		Orders order=this.payRepository.findByOrderId(data.get("orderId").toString());
-		order.setPaymentId((String) data.get("paymentId"));
-		order.setStatus((String) data.get("status"));
-		this.payRepository.save(order);
-		System.out.println(data);
-		return order;
 	}
 
 
-
+}	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+//	Orders order=new Orders();
+//	order.setOrderId(orders.getOrderId());
+//	order.setPaymentId(orders.getPaymentId());
+//	order.setSignature(orders.getSignature());
+	
+	//payRepository.findByOrderId(orders.getOrderId());
 		
 
 	
@@ -109,7 +120,16 @@ public class PayServiceImpl implements PayService{
 	
 
 	
-	
+//@Override
+//public Orders updatePayment(@RequestBody Map<String, Object> data) {
+//
+//	Orders order=this.payRepository.findByOrderId(data.get("orderId").toString());
+//	order.setPaymentId((String) data.get("paymentId"));
+//	order.setStatus((String) data.get("status"));
+//	this.payRepository.save(order);
+//	System.out.println(data);
+//	return order;
+//}	
 	
 	
 	
@@ -160,4 +180,3 @@ public class PayServiceImpl implements PayService{
 //	}
 
 	
-}

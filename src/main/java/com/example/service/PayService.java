@@ -1,12 +1,7 @@
 package com.example.service;
 
 import java.util.List;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.web.bind.annotation.RequestBody;
-
 import com.example.entities.Orders;
 import com.razorpay.Order;
 
@@ -16,6 +11,12 @@ public interface PayService {
 
 	List<Orders> getAllOrders();
 	
-	Orders updatePayment(@RequestBody Map<String, Object> data);
+	Orders executePayment(Orders obj);
 	
 }
+
+
+
+
+
+//Orders updatePayment(@RequestBody Map<String, Object> data);

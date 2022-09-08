@@ -1,8 +1,5 @@
 package com.example.controller;
 
-
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,11 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.entities.OrderResponse;
 import com.example.entities.Orders;
 import com.example.repository.OrderResponseRepository;
-import com.example.repository.PayRepository;
 import com.example.service.PayService;
 import com.razorpay.Order;
-import com.razorpay.Payment;
-import com.razorpay.RazorpayClient;
 
 @RestController
 @RequestMapping("/api")
@@ -54,15 +48,61 @@ public class PayController {
 		return new ResponseEntity<>(this.payService.getAllOrders(),HttpStatus.OK);
 		
 	}
-	
-	@PostMapping("/update")
-	public ResponseEntity<?> updateOrder(@RequestBody Map<String, Object> data){
-	
 
-		this.payService.updatePayment(data);
+	@PostMapping("/success")
+	public ResponseEntity<?> executePayment(@RequestBody Orders orders,HttpServletRequest request)throws Exception{
 		
-		return new ResponseEntity<>("success",HttpStatus.OK);
+		payService.executePayment(orders);
+		System.out.println("orders>>"+orders);
+		return new ResponseEntity<>(orders,HttpStatus.OK);
+		
 	}
 	
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+//@PostMapping("/capture")
+//public Payment captureOrder(String paymentId) throws Exception {
+//
+//	RazorpayClient razorpay = new RazorpayClient("rzp_test_R9M7Z1BLAK9M6i","rgjrq8doiivTeAdDhl4yzOK6");
+//	paymentId = "pay_29QQoUBi66xm2f";
+//	Orders orderRequest=new Orders();
+//	JSONObject paymentRequest = new JSONObject();
+//	paymentRequest.put("amount", orderRequest.getAmount());
+//	paymentRequest.put("currency", "INR");
+//        
+//	Payment payment = razorpay.Payments.capture(paymentId, paymentRequest);
+//	System.out.println("payment>>" +payment);
+//	
+//	//this.payRepository.save(orderRequest);
+//
+//	return payment;
+//
+//}
+
+
+
+
+
+
+
+
+//@PostMapping("/update")
+//public ResponseEntity<?> updateOrder(@RequestBody Map<String, Object> data){
+//
+//
+//	this.payService.updatePayment(data);
+//	
+//	return new ResponseEntity<>("success",HttpStatus.OK);
+//}
