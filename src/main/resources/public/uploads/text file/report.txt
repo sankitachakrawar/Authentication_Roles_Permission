@@ -1,0 +1,12 @@
+GitHub: https://github.com/sankitachakrawar/Authentication_Roles_Permission
+
+9:20 a.m to 12:00 p.m - worked on payment integration api,create another api for success payment
+12:00 p.m to 1:00 p.m - getting errors in that api,resolve errors(execute successfully)
+1:00 p.m to 2:00 p.m - lunch time
+2:00 p.m to 4:00 p.m - getting error(Cannot invoke "com.example.entities.Orders.setPaymentId(String)" because "object" is null) tried to resolve this error,
+				data does not save in database
+4:00 p.m to 6:10 p.m - watch video on swagger concept(what is swagger and why we use it),
+				work on payment integration,resolve error
+
+
+Cannot invoke "com.example.entities.Orders.setPaymentId(String)" because "object" is null
